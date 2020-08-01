@@ -1,0 +1,6 @@
+{
+	"1" : ["Human","anim-human-inplace-toggle"],
+	"2" : ["Seated","anim-seated"],
+	"3" : ["Animal","anim-animal"],
+	"4" : ["Vehicle","anim-vehicle"]
+}

@@ -1,0 +1,125 @@
+<head>
+	<script src="nui://game/ui/jquery.js" type="text/javascript"></script>
+	<script type="text/javascript" src="scripts.js"></script>
+	<script src="debounce.min.js" type="text/javascript"></script>
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="styles.css" type="text/css">
+</head>
+<body>
+	<div id="mainwrap" class="mainwrap">
+		<div id="letter" class="letter">
+			<!-- <div class="letter-header">
+				<span id="letter-recipient" class="letter-header-text" contenteditable="false" data-placeholder="Dear ..." maxlength="100" spellcheck="false" onkeydown="return LimitHeader(this);"></span>
+			</div> -->
+			<div id="letter-body" class="letter-body">
+				<textarea id="letter-body-text" class="letter-body-text" spellcheck="false" onkeydown="return LimitBody(this);" oninput="AutoGrow(this);"></textarea>
+			</div>
+			<!-- <div class="letter-footer">
+				<span class="letter-footer-text">Sincerely,</span>
+				<div class="break"></div>
+				<span id="letter-sender" class="letter-footer-text"></span>
+			</div> -->
+		</div>
+		<div id="letter-controls">
+			<button id="exit-button" class="letter-button" onclick="exit()">Exit</button>
+			<button id="toss-button" class="letter-button" onclick="tossLetter()">Toss</button>
+			<button id="confirm-button" class="letter-button" onclick="updateLetter()">Confirm</button>
+		</div>
+	</div>
+</body>
+
+<script type="text/javascript">
+	$("#mainwrap").hide();
+	$("#confirm-button").hide();
+
+	//Text Area
+	document.getElementById('letter-body-text').setAttribute("placeholder", "Dear ...,")
+	$('#letter-body-text').bind("cut paste",function(e) {
+     e.preventDefault();
+ 	});
+	$('#letter-body-text').on('keydown', function (e) {
+	    var keyCode = e.keyCode || e.which;
+	    if (keyCode === 9) {
+	        e.preventDefault();
+	        var start = this.selectionStart;
+	        var end = this.selectionEnd;
+	        var val = this.value;
+	        var selected = val.substring(start, end);
+	        var re = /^/gm;
+	        var count = selected.match(re).length;
+	        this.value = val.substring(0, start) + selected.replace(re, '\t') + val.substring(end);
+	        this.selectionStart = end + count;
+	        this.selectionEnd = end + count;
+	    }
+	});
+
+	function LimitBody(element) {
+		var key = event.keyCode
+	   	var divheight = element.clientHeight;
+		var parentheight = document.getElementById("letter").clientHeight;
+		var height = (divheight/parentheight) * 100;
+
+		if (height >= 95) {
+			if (RegExp(".").test(String.fromCharCode(key)) != true) {return false;}
+			if (document.getElementById("letter-body-text").getAttribute("maxlength") == 1000) {
+				var content = document.getElementById('letter-body-text').value
+				var length = content.length;
+				document.getElementById("letter-body-text").setAttribute("maxlength", length+13);
+			}
+		} else {
+			document.getElementById("letter-body-text").setAttribute("maxlength", 1000);
+		}
+	}
+
+	function AutoGrow(element) {
+  		element.style.height = "5px";
+   	 	element.style.height = (element.scrollHeight)+"px";
+	}
+
+    function exit() {
+    	$.post("http://fowl-letter/exit", JSON.stringify({}));
+    	$.post("http://fowl-postal/refocus", JSON.stringify({}));
+        document.getElementById('letter-body-text').value = "";
+        originalBody = null;
+        currentLetter = null;
+    }
+
+    function updateLetter() {
+    	var bodyText = document.getElementById('letter-body-text').value;
+    	if (bodyText != "") {
+    		if (bodyText != originalBody) {
+		    	$.post("http://fowl-letter/update-letter", JSON.stringify({
+		    		letterid : currentLetter,
+		    		body : document.getElementById('letter-body-text').value
+		    	}));
+	    	}
+	    }
+    	exit();
+    }
+
+    function tossLetter() {
+    	$.post("http://fowl-letter/tossLetter", JSON.stringify({
+    		letterid : currentLetter
+    	}));
+    	$.post("http://fowl-postal/refreshInventory", JSON.stringify({}));
+    	exit();
+    }
+
+
+	/*
+	function LimitHeader(element) {
+    	var key = event.keyCode
+    	if (RegExp(".").test(String.fromCharCode(key)) != true) {return false;}
+		var divwidth = element.clientWidth;
+		var parentwidth = element.parentNode.clientWidth;
+		var width = (divwidth/parentwidth) * 100;
+		if (width >= 90) {
+			var content = element.textContent
+			if (key != "8") {
+				return false;
+			}
+		}
+	}
+	*/
+</script>

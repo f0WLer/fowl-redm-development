@@ -1,0 +1,8 @@
+{
+	"1" : ["Double Barrel", "WEAPON_SHOTGUN_DOUBLEBARREL"],
+	"2" : ["Double Barrel - Exotic", "WEAPON_SHOTGUN_DOUBLEBARREL_EXOTIC"],
+	"3" : ["Pump", "WEAPON_SHOTGUN_PUMP"],
+	"4" : ["Repeating", "WEAPON_SHOTGUN_REPEATING"],
+	"5" : ["Sawed Off", "WEAPON_SHOTGUN_SAWEDOFF"],
+	"6" : ["Semiauto", "WEAPON_SHOTGUN_SEMIAUTO"],
+}

@@ -1,0 +1,7 @@
+{
+	"1" : ["M1899", "WEAPON_PISTOL_M1899"],
+	"2" : ["Mauser", "WEAPON_PISTOL_MAUSER"],
+	"3" : ["Mauser - Drunk", "WEAPON_PISTOL_MAUSER_DRUNK"],
+	"4" : ["Semiauto", "WEAPON_PISTOL_SEMIAUTO"],
+	"5" : ["Volcanic", "WEAPON_PISTOL_VOLCANIC"],
+}

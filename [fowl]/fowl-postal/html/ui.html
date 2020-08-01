@@ -1,0 +1,274 @@
+<head>
+	<script src="nui://game/ui/jquery.js" type="text/javascript"></script>
+	<script type="text/javascript" src="scripts.js"></script>
+	<script src="debounce.min.js" type="text/javascript"></script>
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css2?family=Rye&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="styles.css" type="text/css">
+</head>
+<body>
+	<div id="mainwrap" class="mainwrap">
+		<div id="post-window">
+			<div id="exit-button" onclick="exit();">⇦</div>
+			<div id="post-title">Post Office</div>
+
+			<div id="post-options-wrap">
+				<div id="post-letter-counter" class="post-option-box" onclick="requestLetters();">Open Post Office Box</div>
+				
+				<span class="spacer"></span>
+				<div id="post-write-letter" class="post-option-underlined" onclick="writeLetter();">Write New Letter</div>
+				
+				<span class="spacer"></span>
+				<div id="post-send-letter" class="post-option-underlined" onclick="selectLetterToMail()">Send Letter</div>
+			</div>
+
+			<div id="post-inventory-wrap">
+			</div>
+
+			<div id="post-mail-wrap">
+				<span class="mail-spacer"></span>
+
+				<div class="label">P.O. Box #</div>
+				<input type="number" id="po-entry" onKeyDown="if(this.value.length==4 && event.keyCode != 8) return false;"></input>
+				
+				<span class="mail-spacer"></span>
+				<div id="address-label" class="label">To:</div>
+				<textarea placeholder="John Doe"class="address-entry" type="text" id="to-entry" maxlength="32" oninput="textAreaResponsive(this),updateEnvAddress();" spellcheck="false"></textarea>
+				
+				<span class="mail-spacer"></span>
+				<div id="address-label" class="label">From:</div>
+				<textarea placeholder="Sheriff's Office" class="address-entry" type="text" id="from-entry" maxlength="32" oninput="textAreaResponsive(this),updateEnvRetAddress();" spellcheck="false"></textarea>
+				
+				<span class="mail-spacer"></span>
+				<div id="send-button" class="post-option-box" onclick="sendLetter();">Send</div>
+			</div>
+
+		</div>
+	</div>
+</body>
+
+<script type="text/javascript">
+	var selectionMode = false;
+	$("#mainwrap").hide();
+	$("#post-inventory-wrap").hide();
+	$("#post-mail-wrap").hide();
+
+	function textAreaResponsive(div) {
+		id = div.id;
+		element = document.getElementById(id);
+		if(element.value.length >= 17) {
+			element.style.height = "17%";
+		} else {
+			element.style.height = "10%";
+		};
+	};
+
+	function updateEnvAddress() {
+		var envAddress = document.getElementById("letter-mail-to");
+		var addressInput = document.getElementById("to-entry");
+		envAddress.innerHTML = addressInput.value;
+	};
+
+	function updateEnvRetAddress() {
+		var envRetAddress = document.getElementById("letter-mail-from");
+		var retAddressInput = document.getElementById("from-entry");
+		envRetAddress.innerHTML = retAddressInput.value;
+	};
+
+	// Wrapper open/close
+    function openLetterInventory() {
+    	$("#post-options-wrap").hide();
+    	$("#post-inventory-wrap").show();
+    };
+    function closeLetterInventory() {
+    	$("#post-options-wrap").show();
+    	$("#post-inventory-wrap").hide();
+    };
+
+    function openMailWrap() {
+    	$("#post-options-wrap").hide();
+    	$("#post-mail-wrap").show();
+    };
+    function closeMailWrap() {
+    	$("#post-options-wrap").show();
+    	$("#post-mail-wrap").hide();
+    };
+
+    // Mail Path
+    function selectLetterToMail() {
+    	selectionMode = true;
+    	requestLetters();
+    };
+
+    function getMailData(letterid) {
+    	document.getElementById("post-inventory-wrap").innerHTML = "";
+    	
+    	closeLetterInventory();
+    	openMailWrap();
+
+    	requestLetterData(letterid);
+    };
+
+    function mailLetter(letterData) {
+    	var json = JSON.parse(letterData);
+		var obj = json[0];
+		if (obj.letterid) {
+			var id = obj.letterid;
+			var letterDiv = document.createElement('div');
+			letterDiv.id = id;
+			letterDiv.classList.add("letter-mail");
+			document.getElementById("post-mail-wrap").prepend(letterDiv);
+			// Return Address -- From
+			var retaddDiv = document.createElement('div');
+			retaddDiv.id = "letter-mail-from";
+			retaddDiv.classList.add("letter-text");
+			document.getElementById(id).appendChild(retaddDiv);
+			if (obj.returnaddress) {
+				retaddDiv.innerHTML = obj.returnaddress;
+				document.getElementById("from-entry").value = obj.returnaddress;
+			} else { retaddDiv.innerHTML = "‎" };
+			// Address -- To
+			var addressDiv = document.createElement('div');
+			addressDiv.id = "letter-mail-to";
+			addressDiv.classList.add("letter-text");
+			document.getElementById(id).appendChild(addressDiv);
+			if (obj.address) {
+				addressDiv.innerHTML = obj.address;
+				document.getElementById("to-entry").value = obj.address;
+			} else { addressDiv.innerHTML = "‎" };
+			// Date
+			var dateDiv = document.createElement('div');
+			dateDiv.id = "letter-date";
+			dateDiv.classList.add("letter-text");
+			document.getElementById(id).appendChild(dateDiv);
+			if (obj.date) {
+				document.getElementById("letter-date").value = obj.date
+			} else { document.getElementById("letter-date").value = "‎" };
+		};
+    };
+
+    function updateAddressData() {
+    	var letterid = document.getElementsByClassName("letter-mail")[0].id;
+    	var address = document.getElementById("to-entry").value;
+    	var returnAddress = document.getElementById("from-entry").value;
+    	$.post("http://fowl-postal/updateAddressData", JSON.stringify({
+    		letterid : letterid,
+    		address : address,
+    		returnAddress: returnAddress
+    	}));
+    }
+
+    function sendLetter() {
+    	var letterid = document.getElementsByClassName("letter-mail")[0].id;
+    	var desiredPOBox = document.getElementById("po-entry").value;
+    	updateAddressData();
+    	if (desiredPOBox && isNaN(desiredPOBox) != true) {
+    		$.post("http://fowl-postal/sendLetter", JSON.stringify({
+    			letterid : letterid,
+    			to_userid : desiredPOBox
+    		}));
+    	};
+    	exit();
+    }
+
+    function exit() {
+    	var mainWindow = document.getElementById("post-options-wrap");
+    	if (window.getComputedStyle(mainWindow).display === "none") {
+    		$("#post-inventory-wrap").hide();
+    		$("#post-mail-wrap").hide();
+
+    		$("#post-options-wrap").show();
+    	} else { $.post("http://fowl-postal/exit", JSON.stringify({})); };
+
+    	document.getElementById("post-inventory-wrap").innerHTML = "";
+
+    	var mailLetter = document.getElementsByClassName("letter-mail")[0];
+    	if (mailLetter) { mailLetter.remove(); }
+
+    	document.getElementById("to-entry").value = "";
+    	document.getElementById("from-entry").value = "";
+    	document.getElementById("po-entry").value = "";
+    	
+    	selectionMode = false;
+    };
+
+    function writeLetter() {
+    	$.post("http://fowl-letter/writeLetter", JSON.stringify({}));
+    };
+
+    function requestLetters() {
+    	$.post("http://fowl-postal/requestLetters", JSON.stringify({}));
+    };
+
+    function requestLetterData(letterid) {
+    	$.post("http://fowl-postal/requestLetterData", JSON.stringify({letterid : letterid}));
+    };
+
+    function openLetter(id) {
+    	$.post("http://fowl-letter/RequestLetter", JSON.stringify({letterid : id}));
+    };
+
+    function drawLetterInventory(letters) {
+    	document.getElementById("post-inventory-wrap").innerHTML = "";
+    	openLetterInventory();
+
+		var json = JSON.parse(letters);
+		for(var i = 0; i < json.length; i++) {
+			var obj = json[i];
+			if (obj.letterid) {
+				// Letter Frame, Assign Id
+				var id = obj.letterid;
+				var letterDiv = document.createElement('div');
+				letterDiv.id = id;
+				letterDiv.classList.add("letter");
+				document.getElementById("post-inventory-wrap").appendChild(letterDiv);
+				// Return Adress -- From
+				var retaddDiv = document.createElement('div');
+				retaddDiv.id = "letter-from";
+				retaddDiv.classList.add("letter-text");
+				document.getElementById(id).appendChild(retaddDiv);
+				if (obj.returnaddress) {;
+					retaddDiv.innerHTML = obj.returnaddress;
+				} else { retaddDiv.innerHTML = "‎" };
+				// Address -- To
+				var addressDiv = document.createElement('div');
+				addressDiv.id = "letter-to";
+				addressDiv.classList.add("letter-text");
+				document.getElementById(id).appendChild(addressDiv);
+				if (obj.address) {
+					addressDiv.innerHTML = obj.address
+				} else { addressDiv.innerHTML = "‎" };
+				// Date
+				var dateDiv = document.createElement('div');
+				dateDiv.id = "letter-date";
+				dateDiv.classList.add("letter-text");
+				document.getElementById(id).appendChild(dateDiv);
+				if (obj.date) {
+					document.getElementById("letter-date").value = obj.date
+				} else { document.getElementById("letter-date").value = "‎" };
+				// Letter Onlick Functionality
+				if (selectionMode === false) {
+					document.getElementById(id).setAttribute("onClick", "javascript: openLetter("+id+");");
+				} else {
+					document.getElementById(id).setAttribute("onClick", "javascript: getMailData("+id+");");
+				};
+			};
+		};
+    };
+
+    window.addEventListener('message', function(event) {
+		var ed = event.data;
+
+		if(ed.refresh === true) {
+    		requestLetters();
+    	};
+		if(ed.letters) {
+			drawLetterInventory(ed.letters);
+		};
+		if(ed.letterData) {
+			mailLetter(ed.letterData);
+		};
+	});
+
+</script>

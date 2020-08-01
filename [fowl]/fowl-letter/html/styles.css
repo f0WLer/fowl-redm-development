@@ -1,0 +1,150 @@
+body {
+	height: 100vh;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	font-family: -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+	font-family: monospace;
+	font-size: 5vh;
+	position: relative;
+}
+
+.mainwrap{
+	display: flex;
+	justify-content: center;
+	flex-flow: row wrap;
+}
+
+.letter {
+	background-image: url("ui/paper.png");
+	height: 800px;
+	width: 600px;
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	align-content: flex-start;
+	border: 1px solid #5e351f;
+}
+
+.letter-body {
+	width: 90%;
+	max-height: 80%;
+	margin-top: 2%;
+	margin-bottom: 2%;
+}
+
+.letter-body-text {
+	background-color: rgba(0,0,0,0);
+	font-size: 22pt;
+	font-family: "Alex Brush", cursive, monospace;
+	font-weight: 700;
+	color: #5e351f;
+	width: 100%;
+	max-width: 100%;
+	border: none;
+	outline: none;
+	line-height: 1;
+	resize: none;
+	overflow: hidden;
+	height: 34px;
+}
+
+.letter-body-text::selection {
+	background: rgba(94, 53, 31, 0.2);
+}
+
+#letter-controls {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	margin-top: 1vw;
+}
+
+.letter-button {
+	background-image: url("ui/paper.png");
+	font-size: 22pt;
+	font-family: "Alex Brush", cursive, monospace;
+	font-weight: 700;
+	letter-spacing: 3px;
+	color: #5e351f;
+	border: 2px solid #5e351f;
+	width: fit-content;
+	margin-right: 2%;
+}
+
+.letter-button:last-of-type{
+	margin-right: 0;
+}
+/*
+.letter-header {
+	margin-top: 2%;
+	width: 90%;
+	white-space: nowrap;
+	display: flex;
+}
+
+.letter-header-text {
+	font-size: 22pt;
+	font-family: "Alex Brush", cursive, monospace;
+	font-weight: 700;
+	letter-spacing: 3px;
+	color: #5e351f;
+	opacity: 75%;
+	margin: 0;
+	padding: 1%;
+	overflow: hidden;
+	text-overflow: ellipsis;
+
+	background-color: rgba(0,0,0,0)
+	width: auto;
+	max-width: 100%;
+	border: none;
+	outline: none;
+	line-height: 1;
+	height: 34px;
+}
+
+.letter-header-text:empty::before {
+	content:attr(data-placeholder);
+	color:grey;
+}
+
+.letter-header-text::selection {
+	background: rgba(94, 53, 31, 0.2);
+}
+
+.letter-footer {
+	width: 90%;
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.letter-footer-text {
+	margin: 0;
+	padding: 0;
+	font-size: 22pt;
+	font-family: "Alex Brush", cursive, monospace;
+	font-weight: 700;
+	color: #5e351f;
+	opacity: 75%;
+	line-height: 1.2;
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.letter-footer-text:empty::before {
+	content:attr(data-placeholder);
+	color:grey;
+}
+
+.letter-footer-text::selection {
+	background: rgba(94, 53, 31, 0.2);
+}
+
+.break {
+  flex-basis: 100%;
+  height: 0;
+}
+*/

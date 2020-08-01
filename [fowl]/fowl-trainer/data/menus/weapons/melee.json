@@ -1,0 +1,23 @@
+{
+	"1" : ["Broken Sword", "WEAPON_MELEE_BROKEN_SWORD"],
+	"2" : ["Cleaver", "WEAPON_MELEE_CLEAVER"],
+	"3" : ["Hatchet", "WEAPON_MELEE_HATCHET"],
+	"4" : ["Hatchet - Ancient", "WEAPON_MELEE_ANCIENT_HATCHET"],
+	"5" : ["Hatchet - Double Bit", "WEAPON_MELEE_HATCHET_DOUBLE_BIT"],
+	"6" : ["Hatchet - Double Bit R", "WEAPON_MELEE_HATCHET_DOUBLE_BIT_RUSTED"],
+	"7" : ["Hatchet - Hewing", "WEAPON_MELEE_HATCHET_HEWING"],
+	"8" : ["Hatchet - Hunter", "WEAPON_MELEE_HATCHET_HUNTER"],
+	"9" : ["Hatchet - Hunter R", "WEAPON_MELEE_HATCHET_HUNTER_RUSTED"],
+	"10" : ["Hatchet - Viking", "WEAPON_MELEE_HATCHET_VIKING"],
+	"11" : ["Knife", "WEAPON_MELEE_KNIFE"],
+	"12" : ["Knife - Bear", "WEAPON_MELEE_KNIFE_BEAR"],
+	"13" : ["Knife - Civil War", "WEAPON_MELEE_KNIFE_CIVIL_WAR"],
+	"14" : ["Knife - Jawbone", "WEAPON_MELEE_KNIFE_JAWBONE"],
+	"15" : ["Knife - John", "WEAPON_MELEE_KNIFE_JOHN"],
+	"16" : ["Knife - Miner", "WEAPON_MELEE_KNIFE_MINER"],
+	"17" : ["Knife - Vampire", "WEAPON_MELEE_KNIFE_VAMPIRE"],
+	"18" : ["Machete", "WEAPON_MELEE_MACHETE"],
+	"19" : ["Throwing Knife", "WEAPON_THROWN_THROWING_KNIVES"],
+	"20" : ["Tomahawk", "WEAPON_THROWN_TOMAHAWK"],
+	"21" : ["Tomahawk - Ancient", "WEAPON_THROWN_TOMAHAWK_ANCIENT"]
+}

@@ -1,0 +1,5 @@
+{
+	"1" : ["Chair/Bench","anim-seated-chair"],
+	"2" : ["Ground","anim-seated-ground-toggle"],
+	"3" : ["Ledge/Steps","anim-seated-ledge"]
+}

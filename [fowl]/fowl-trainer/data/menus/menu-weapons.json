@@ -1,0 +1,6 @@
+{
+	"1" : ["Give Weapon", "give-weapon"],
+	"2" : ["Remove Weapons", "remove-weapons"],
+	"3" : ["Remove Current Weapon", "remove-current-weapon"],
+	"4" : ["Infinite Ammo", "infinite-ammo"]
+}
