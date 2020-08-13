@@ -71,11 +71,6 @@ function runMail()
 	end
 end
 
-RegisterNetEvent("postal:sv_sendClientUserId")
-AddEventHandler("postal:sv_sendClientUserId", function()
-	TriggerClientEvent("postal:cl_receiveUserId", source, User.GetID(source))
-end)
-
 RegisterNetEvent("postal:sv_requestLetters")
 AddEventHandler("postal:sv_requestLetters", function(userid)	
 	sv_requestLetters(source, userid)

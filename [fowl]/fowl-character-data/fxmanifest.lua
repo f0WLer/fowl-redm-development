@@ -10,7 +10,6 @@ server_script {
 	'server/server.lua',
 	'@fowl-mysql/lib/MySQL2.lua',
 	'@fowl-user-data/lib/Users.lua',
-	'@fowl-time-weather-sync/lib/Time.lua',
 }
 
 

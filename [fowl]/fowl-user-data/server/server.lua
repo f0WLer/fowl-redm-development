@@ -1,10 +1,14 @@
-RegisterNetEvent("PlayerConnect")
-AddEventHandler("PlayerConnect", function()
+RegisterNetEvent("user:onJoin")
+AddEventHandler("user:onJoin", function()
 	local player = source
 	print("^5Player ".. GetPlayerName(source) .. " connected.^0")
-	user_add(player)
+	if user_is_saved(player) ~= true then
+		user_add(player)
+	end
 	Wait(500)
 	ChatOutput(player, "Welcome to ^1Fowl's RedM Server^0")
+	local userid = user_get_id(player)
+	TriggerClientEvent("user:setUserid", player, userid)
 end)
 
 function ChatOutput(player, content)

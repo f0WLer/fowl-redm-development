@@ -18,3 +18,5 @@ files {
 		'html/*',
 		'html/ui/*',
 }
+
+dependency 'fowl-user-data'

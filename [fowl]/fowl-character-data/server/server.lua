@@ -1,7 +1,10 @@
+Citizen.CreateThread(function()
+	local characterCount = MySQL2.Sync.fetchScalar("SELECT COUNT(charid) FROM characters",{})
+end)
+
 function addCharacter(player)
 	local userid = User.GetID(player)
 	local characterid = nil
-	local characterCount = MySQL2.Sync.fetchScalar("SELECT COUNT(characterid) FROM characters",{})
 	if characterCount ~= 0 then
 		local latestId = MySQL2.Sync.fetchScalar("SELECT * FROM characters ORDER BY characterid DESC LIMIT 1",{})
 		characterid = math.floor(latestId + 1)
@@ -9,8 +12,9 @@ function addCharacter(player)
 		characterid = 1	
 	end
 
-	MySQL2.Async.execute("UPDATE `characters` INSERT INTO (characterid, userid) VALUES(?, ?"),
+	MySQL2.Async.execute("UPDATE `characters` INSERT INTO (charid, userid) VALUES(?, ?)",
 		{characterid,userid})
+	characterCount = characterCount + 1
 end
 
 function getCharacters(player)

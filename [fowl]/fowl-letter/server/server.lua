@@ -1,8 +1,3 @@
-RegisterNetEvent("letter:sv_sendClientUserId")
-AddEventHandler("letter:sv_sendClientUserId", function()
-	TriggerClientEvent("letter:cl_receiveUserId", source, User.GetID(source))
-end)
-
 RegisterNetEvent("letter:sv_OpenLetter")
 AddEventHandler("letter:sv_OpenLetter", function(userid, letterid)
 	sv_OpenLetter(source, userid, letterid)
