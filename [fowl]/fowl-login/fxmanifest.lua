@@ -16,5 +16,4 @@ server_script {
 files {
 }
 
-dependencies {
-}
+dependency 'fowl-user-data'
