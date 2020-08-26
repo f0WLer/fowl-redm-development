@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+- phpMyAdmin XML Dump
+- version 5.0.2
+- https://www.phpmyadmin.net
+-
+- Host: 127.0.0.1
+- Generation Time: Aug 26, 2020 at 02:28 PM
+- Server version: 10.4.13-MariaDB
+- PHP Version: 7.4.7
+-->
+
+<pma_xml_export version="1.0" xmlns:pma="https://www.phpmyadmin.net/some_doc_url/">
+    <!--
+    - Structure schemas
+    -->
+    <pma:structure_schemas>
+        <pma:database name="redm" collation="utf8mb4_general_ci" charset="utf8mb4">
+            <pma:table name="characters">
+                CREATE TABLE `characters` (
+                  `charid` int(10) NOT NULL,
+                  `userid` int(10) NOT NULL,
+                  PRIMARY KEY (`charid`),
+                  KEY `userid` (`userid`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+            </pma:table>
+            <pma:table name="character_data">
+                CREATE TABLE `character_data` (
+                  `charid` int(10) NOT NULL,
+                  `firstname` varchar(128) DEFAULT NULL,
+                  `lastname` varchar(128) DEFAULT NULL,
+                  PRIMARY KEY (`charid`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+            </pma:table>
+            <pma:table name="letters">
+                CREATE TABLE `letters` (
+                  `letterid` int(10) NOT NULL,
+                  `ownerid` varchar(10) NOT NULL,
+                  `creatorid` int(10) NOT NULL,
+                  `body` varchar(2048) DEFAULT NULL,
+                  `address` varchar(256) DEFAULT NULL,
+                  `returnaddress` varchar(256) DEFAULT NULL,
+                  `returned` tinyint(1) NOT NULL DEFAULT 0,
+                  `date` varchar(64) DEFAULT NULL,
+                  PRIMARY KEY (`letterid`),
+                  KEY `ownerid` (`ownerid`),
+                  KEY `creatorid` (`creatorid`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+            </pma:table>
+            <pma:table name="mail">
+                CREATE TABLE `mail` (
+                  `letterid` int(10) NOT NULL,
+                  `from_userid` int(10) NOT NULL,
+                  `to_userid` int(10) NOT NULL,
+                  PRIMARY KEY (`letterid`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+            </pma:table>
+            <pma:table name="users">
+                CREATE TABLE `users` (
+                  `userid` int(10) NOT NULL,
+                  `steamid` varchar(128) NOT NULL,
+                  `name` varchar(128) NOT NULL,
+                  PRIMARY KEY (`userid`),
+                  KEY `steamid` (`steamid`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+            </pma:table>
+        </pma:database>
+    </pma:structure_schemas>
+
+    <!--
+    - Database: 'redm'
+    -->
+    <database name="redm">
+        <!-- Table characters -->
+        <table name="characters">
+            <column name="charid">1</column>
+            <column name="userid">1</column>
+        </table>
+        <table name="characters">
+            <column name="charid">3</column>
+            <column name="userid">1</column>
+        </table>
+        <table name="characters">
+            <column name="charid">2</column>
+            <column name="userid">2</column>
+        </table>
+        <!-- Table character_data -->
+        <table name="character_data">
+            <column name="charid">1</column>
+            <column name="firstname">Walter</column>
+            <column name="lastname">Bolton</column>
+        </table>
+        <table name="character_data">
+            <column name="charid">2</column>
+            <column name="firstname">Character</column>
+            <column name="lastname">Two</column>
+        </table>
+        <table name="character_data">
+            <column name="charid">3</column>
+            <column name="firstname">Character</column>
+            <column name="lastname">Three</column>
+        </table>
+        <!-- Table letters -->
+        <table name="letters">
+            <column name="letterid">1</column>
+            <column name="ownerid">1</column>
+            <column name="creatorid">1</column>
+            <column name="body">Letter 1</column>
+            <column name="address">Letter 1</column>
+            <column name="returnaddress">Walter</column>
+            <column name="returned">1</column>
+            <column name="date">NULL</column>
+        </table>
+        <table name="letters">
+            <column name="letterid">2</column>
+            <column name="ownerid">1</column>
+            <column name="creatorid">1</column>
+            <column name="body">Letter 2</column>
+            <column name="address">Letter 2</column>
+            <column name="returnaddress">Walter</column>
+            <column name="returned">1</column>
+            <column name="date">NULL</column>
+        </table>
+        <table name="letters">
+            <column name="letterid">3</column>
+            <column name="ownerid">1</column>
+            <column name="creatorid">1</column>
+            <column name="body">Letter 3</column>
+            <column name="address">NULL</column>
+            <column name="returnaddress">NULL</column>
+            <column name="returned">0</column>
+            <column name="date">NULL</column>
+        </table>
+        <!-- Table mail -->
+        <!-- Table users -->
+        <table name="users">
+            <column name="userid">1</column>
+            <column name="steamid">steam:110000109533e5d</column>
+            <column name="name">f0WL</column>
+        </table>
+    </database>
+</pma_xml_export>
