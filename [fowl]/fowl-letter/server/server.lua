@@ -1,6 +1,6 @@
-RegisterNetEvent("letter:sv_OpenLetter")
-AddEventHandler("letter:sv_OpenLetter", function(userid, letterid)
-	sv_OpenLetter(source, userid, letterid)
+RegisterNetEvent("letter:sv_openLetter")
+AddEventHandler("letter:sv_openLetter", function(userid, letterid)
+	sv_openLetter(source, userid, letterid)
 end)
 
 RegisterNetEvent("letter:sv_UpdateLetter")
@@ -33,11 +33,11 @@ function GetLetterOwner(letterid)
 	return ownerid
 end
 
-function sv_OpenLetter(player, userid, letterid)
+function sv_openLetter(player, userid, letterid)
 	local body = GetLetterBody(letterid)
 	local creatorid = GetLetterCreator(letterid)
 	local iscreator = (tostring(userid) == tostring(creatorid))
-	TriggerClientEvent("letter:cl_OpenLetter", player, letterid, iscreator, body)
+	TriggerClientEvent("letter:cl_openLetter", player, letterid, iscreator, body)
 end
 
 function sv_UpdateLetter(player, letterid, body)
@@ -63,7 +63,7 @@ function sv_NewLetter(player)
 	else
 		letterid = 1
 	end
-	TriggerClientEvent("letter:cl_OpenLetter", player, letterid, true, nil)
+	TriggerClientEvent("letter:cl_openLetter", player, letterid, true, nil)
 end
 
 function sv_DeleteLetter(letterid)

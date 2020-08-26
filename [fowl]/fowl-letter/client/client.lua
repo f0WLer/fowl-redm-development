@@ -17,15 +17,9 @@ local userid
 Citizen.CreateThread(function() userid = getUserid() end)
 
 -- Net Events
-RegisterNetEvent("letter:cl_OpenLetter")
-AddEventHandler("letter:cl_OpenLetter", function(letterid, iscreator, body)
-	cacheFlush()
-	cacheAdd(letterid, body, iscreator)
-	if iscreator == false then
-		ReadLetter(body)
-	else
-		WriteLetter(letterid, body)
-	end
+RegisterNetEvent("letter:cl_openLetter")
+AddEventHandler("letter:cl_openLetter", function(letterid, iscreator, body)
+	cl_openLetter(letterid, iscreator, body)
 end)
 
 RegisterNUICallback("RequestLetter", function(data)
@@ -98,7 +92,7 @@ end
 
 function RequestLetter(letterid)
 	if isCached(letterid) == false then
-		TriggerServerEvent("letter:sv_OpenLetter", userid, letterid)
+		TriggerServerEvent("letter:sv_openLetter", userid, letterid)
 	else
 		local body,iscreator = cacheRead(letterid)
 		if iscreator == false then
@@ -106,6 +100,16 @@ function RequestLetter(letterid)
 		else
 			WriteLetter(letterid, body)
 		end
+	end
+end
+
+function cl_openLetter(letterid, iscreator, body)
+	cacheFlush()
+	cacheAdd(letterid, body, iscreator)
+	if iscreator == false then
+		ReadLetter(body)
+	else
+		WriteLetter(letterid, body)
 	end
 end
 
@@ -123,6 +127,7 @@ end
 
 RegisterNUICallback("update-letter", function(data)
 	TriggerServerEvent("letter:sv_UpdateLetter", data.letterid, data.body)
+	cacheAdd(data.letterid, data.body, true)
 end)
 
 Citizen.CreateThread(function()
