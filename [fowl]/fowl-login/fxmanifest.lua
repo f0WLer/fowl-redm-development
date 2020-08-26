@@ -12,8 +12,12 @@ server_script {
 	'@fowl-user-data/lib/Users.lua',
 }
 
+ui_page 'html/ui.html'
 
 files {
+	'html/*',
+	'html/assets/*',
+	'html/assets/textures/*',
 }
 
 dependency 'fowl-user-data'
