@@ -3,7 +3,9 @@ games { 'rdr3' }
 rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aware my resources *will* become incompatible once RedM ships.'
 
 client_script { 
-	'client/client.lua', 
+	'client/client.lua',
+	'client/spawn.lua', 
+	'client/char.lua', 
 }
 
 server_script {
@@ -18,6 +20,7 @@ files {
 	'html/*',
 	'html/assets/*',
 	'html/assets/textures/*',
+	'html/assets/icons/*',
 }
 
 dependency 'fowl-user-data'

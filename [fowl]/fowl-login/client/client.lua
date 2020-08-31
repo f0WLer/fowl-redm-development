@@ -118,45 +118,138 @@ function limitLogins()
 
 end
 --[[ ////////// //////////]]
+function initiateSpawn(spawnCity)
+	DoScreenFadeOut(500)
+	Wait(500)
+	DisplayHud(true)
+	RenderScriptCams(false)
+	local crd = spawnPoints[spawnCity]
+	SetEntityCoords(PlayerPedId(),crd.x, crd.y, crd.z, false, false, false, false)
+	SetEntityInvincible(PlayerPedId(), false)
+	FreezeEntityPosition(PlayerPedId(), false)
+	SetEveryoneIgnorePlayer(PlayerPedId(), false)
+	SetEntityAlpha(PlayerPedId(), 0, false)
+	local playerAlpha = 0
+	SetEntityVisible(PlayerPedId(), true)
+	while playerAlpha < 255 do
+		Wait(25)
+		playerAlpha = playerAlpha + 5
+		SetEntityAlpha(PlayerPedId(), playerAlpha, false)
+	end
+	SetEntityAlpha(PlayerPedId(), playerAlpha, false)
+	DoScreenFadeIn(3000)
+end
 
 function initiateLogin()
-	local startCam
-	DrawHTML()
-	NuiFocus(true)
-
 	DestroyAllCams(true)
 	RenderScriptCams(false, false, 0, true, true)
 
-	local camCoords = {x = -306.40, y = 790.90, z = 300.00}
+	--local camCoords = {x = 300.0, y = -2400.0, z = 300.0}
+	--local point = {x = 500.0, y = 0.0, z = 0.00}
+	
+	local camCoords = {x = -5027.0, y = -3094.0, z = 300.0}
+	local point = {x = 3170.0, y = -56.0, z = 0.00}
+
+	function movePlayer(x, y, z)
+		SetEveryoneIgnorePlayer(PlayerPedId(), true)
+		SetEntityCoords(PlayerPedId(), x, y, z, false, false, false, false)
+		FreezeEntityPosition(PlayerPedId(), true)
+		SetEntityVisible(PlayerPedId(), false)
+		SetEntityInvincible(PlayerPedId(), true)
+	end
+
 	function loadStartCam()
 		local cam = CreateCam("DEFAULT_SCRIPTED_CAMERA", true)
 	    SetCamCoord(cam, camCoords.x, camCoords.y, camCoords.z)
-	    PointCamAtCoord(cam, camCoords.x, camCoords.y, 0.0)
-	    --SetCamActive(cam, true)
+		--SetCamFov(cam, 100.0)
+		SetCamFov(cam, 40.0)
+	    PointCamAtCoord(cam, point.x, point.y, point.z)
 	    RenderScriptCams(true, false, 0, true, true)
 
-	    startCam = cam
+	    return cam
 	end
 
-	function transitionCam()
-		local zoomCam = CreateCam("DEFAULT_SCRIPTED_CAMERA", true)
-		SetCamCoord(zoomCam, camCoords.x, camCoords.y, 120.0)
-		SetCamActiveWithInterp(zoomCam, startCam, 3700, true, true)
+	function loadSpawnCam()
+		local cam = CreateCam("DEFAULT_SCRIPTED_CAMERA", true)
+	    SetCamCoord(cam, camCoords.x, camCoords.y, camCoords.z)
+		--SetCamFov(cam, 100.0)
+		SetCamFov(cam, 40.0)
+	    PointCamAtCoord(cam, point.x, point.y, point.z)
+
+		return cam
+	end
+
+	function loadCityCam(cityId)
+		local cams = {[1] = cam_bla, [2] = cam_arm, [3] = cam_val, [4] = cam_ann, [5] = cam_san}
+		local city = cams[cityId]
+		movePlayer(city.x, city.y, 100.0)
+		local cam = CreateCam("DEFAULT_SCRIPTED_CAMERA", true)
+		SetCamCoord(cam, city.x, city.y, city.z)
+		SetCamFov(cam, 80.0)
+		PointCamAtCoord(cam, city.pointx, city.pointy, city.pointz)
+		return cam		
+	end
+
+	function transitionCam(fromCam, toCam, duration)
+		SetCamActiveWithInterp(toCam, fromCam, duration, true, true)
 		RenderScriptCams(true, false, 0, true, true)
 	end
 
-	loadStartCam()
+	movePlayer(camCoords.x, camCoords.y, 120.0)
+	local startCam = loadStartCam()
+	DisplayHud(false)
+	
+	while IsLoadingScreenActive() ~= false do
+		Wait(100)
+	end
 
+	getCityScreenCoords()
+	SendNUIMessage({initMenu = true});
+	DrawHTML()
+	NuiFocus(true)
 	repeat Wait(100) until currentChar ~= nil
 	
+	SendNUIMessage({initSpawnSelect = true})
+	local spawnMenuCam = loadSpawnCam()
+	transitionCam(startCam, spawnMenuCam, 1000)
+
+ 	
+	local selectedSpawn = nil
+	local spawnConfirmed = false
+
+	RegisterNUICallback("selectSpawn", function(data)
+		selectedSpawn = data.spawnId
+		SendNUIMessage({hideIcons = true})
+		SendNUIMessage({drawMenu = true})
+		loadCityCam(selectedSpawn)
+	end)
+
+	RegisterNUICallback("cancelSpawn", function(data)
+		selectedSpawn = nil
+		SendNUIMessage({drawIcons = true})
+		SendNUIMessage({hideMenu = true})
+		loadSpawnCam()
+	end)
+
+	RegisterNUICallback("confirmSpawn", function(data)
+		spawnConfirmed = true
+	end)
+
+	repeat Wait(250) until spawnConfirmed ~= false
+
+	SendNUIMessage({hideMenu = true})
 	DisableHTML()
 	NuiFocus(false)
-	transitionCam()
+	initiateSpawn(selectedSpawn)
 end
 
 local currentChar
 
 Citizen.CreateThread(function()
+	Wait(200)
 	initiateLogin()
-
-end)
+	
+	--dRenderScriptCams(false)
+	--NuiFocus(false)
+	--print(GetWaypointCoords())
+end) 

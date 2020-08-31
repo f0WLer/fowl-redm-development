@@ -18,10 +18,10 @@
 		</div>
 
 		<div id="cmenu" style="display:none">
-			<div id="cmenu-title">
+			<div class="menu-title">
 				<h1 class="menu-text-large">characters</h1>
 				<span class="linebreak"></span>
-				<img id="cmenu-underline" src="assets/textures/crafting_highlight_b.png"></img>
+				<img id="cmenu-underline" class="menu-underline" src="assets/textures/crafting_highlight_b.png"></img>
 			</div>
 			<div id="cmenu-selection">
 				<img id="cmenu-background" src="assets/textures/translate_bg_1a.png"></img>
@@ -48,14 +48,40 @@
 			<span class="linebreak"></span>
 			<h1 id="login-prompt" class="menu-text"></h1>
 		</div>
+
+		<div id="smenu" style="display:none">
+			<div class="menu-title">
+				<h1 class="menu-text-large">spawn</h1>
+				<span class="linebreak"></span>
+				<img id="smenu-underline" class="menu-underline" src="assets/textures/crafting_highlight_b.png"></img>
+			</div>
+			<div id="smenu-markers"></div>
+			<div id="smenu-options" style="display:none">
+				<div id="back-arrow" onclick="cancelSpawn();"></div>
+				<div id="confirm-button" onclick="confirmSpawn();">
+					<h1 id="confirm-text" class="menu-text-large">confirm</h1>
+				</div>
+			</div>
+		</div>
+
 	</div>
 </body>
 
 <script type="text/javascript">
+	$("#mainwrap").hide();
+
+	window.addEventListener('message', function(event) {
+		var ed = event.data;
+
+		if (ed.initMenu) { 
+			$("#mainwrap").show();
+		};
+	});
+
 	var mmenu_clicked = false
 	function mmenuContinue() {
 		if (mmenu_clicked != true) {
-			mmenu_clicked = false;
+			mmenu_clicked = true;
 			charSelect();
 		};
 	};
@@ -64,5 +90,13 @@
 		$("#mmenu").hide()
 		$("#cmenu").show()
 	}; 
+
+	function confirmSpawn() {
+		$.post("http://fowl-login/confirmSpawn", JSON.stringify({}))
+	}
+
+	function cancelSpawn() {
+		$.post("http://fowl-login/cancelSpawn", JSON.stringify({}))
+	}
 
 </script>
