@@ -12,13 +12,12 @@ Sync.WeatherInitialize = function()
             [0] = 'WEATHER_CLEAR',
             [1] = 'WEATHER_CLOUDS',
             [2] = 'WEATHER_SMOG',
-            [3] = 'WEATHER_FOGGY',
-            [4] = 'WEATHER_OVERCAST',
-            [5] = 'WEATHER_RAINING',
-            [6] = 'WEATHER_THUNDER',
-            [7] = 'WEATHER_CLEARING',
-            [8] = 'WEATHER_NEUTRAL',
-            [9] = 'WEATHER_SNOW'
+            [3] = 'WEATHER_OVERCAST',
+            [4] = 'WEATHER_RAINING',
+            [5] = 'WEATHER_THUNDER',
+            [6] = 'WEATHER_CLEARING',
+            [7] = 'WEATHER_NEUTRAL',
+            [8] = 'WEATHER_SNOW'
         }
 
         if (type(index) ~= 'number' or index == nil) then
