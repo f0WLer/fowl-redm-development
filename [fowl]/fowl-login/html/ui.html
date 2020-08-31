@@ -2,6 +2,7 @@
 	<script src="nui://game/ui/jquery.js" type="text/javascript"></script>
 	<script type="text/javascript" src="scripts.js"></script>
 	<script src="debounce.min.js" type="text/javascript"></script>
+	<link href="https://fonts.googleapis.com/css2?family=Alex+Brush&display=swap" rel="stylesheet">
 	<link rel="stylesheet" href="styles.css" type="text/css">
 </head>
 <body>
@@ -25,24 +26,44 @@
 			</div>
 			<div id="cmenu-selection">
 				<img id="cmenu-background" src="assets/textures/translate_bg_1a.png"></img>
-				<div id="cmenu-chars">
-					<!-- <div class="charwindow">
+				<button id="new-char-button-ghost" class="ghost-button">new <br>character</button>
+
+				<div id="cmenu-chars"></div>
+
+				<button id="new-char-button" onclick="newChar();">new <br>character</button>
+			</div>
+			<div id="cmenu-newchar" style="display:none">
+				<img id="cmenu-background" src="assets/textures/translate_bg_1a.png"></img>
+				<div id="cmenu-new-char">
+					<div class="charwindow">
 						<img class="cwindow-border" src="assets/textures/char-window-border.png"></img>
 						<div class="char-data">
+
 							<div class="char-info">
 								<div class="char-info-tag">
-									<h1 class="info-text">name</h1>
+									<h1 class="info-text">first name</h1>
 								</div>
 								<span class="linebreak"></span>
 								<div class="char-info-value">
-									<h1 class="info-text">Test Charactern</h1>
+									<input id="newcharinput-firstname" class="info-input" maxlength="18"></input>
 								</div>
 								<img class="info-divider" src="assets/textures/divider_line.png"></img>
 							</div>
+
+							<div class="char-info">
+								<div class="char-info-tag">
+									<h1 class="info-text">last name</h1>
+								</div>
+								<span class="linebreak"></span>
+								<div class="char-info-value">
+									<input id="newcharinput-lastname" class="info-input" maxlength="18"></input>
+								</div>
+								<img class="info-divider" src="assets/textures/divider_line.png"></img>
+							</div>
+
 						</div>
-						<button id="char-select-button">select</button>
+						<button id="newchar-create-button" onclick="createNewChar();" oninput="bigCaps();">create</button>
 					</div>
-					-->
 				</div>
 			</div>
 			<span class="linebreak"></span>
@@ -87,16 +108,16 @@
 	};
 
 	function charSelect() {
-		$("#mmenu").hide()
-		$("#cmenu").show()
+		$("#mmenu").hide();
+		$("#cmenu").show();
 	}; 
 
-	function confirmSpawn() {
-		$.post("http://fowl-login/confirmSpawn", JSON.stringify({}))
-	}
+	function newChar() {
+		$("#cmenu-selection").hide();
+		$("#cmenu-newchar").show();
+	};
 
-	function cancelSpawn() {
-		$.post("http://fowl-login/cancelSpawn", JSON.stringify({}))
-	}
+	function bigCaps() {
 
+	};
 </script>

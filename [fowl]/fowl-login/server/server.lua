@@ -9,7 +9,7 @@ function awaitCharacterCount()
 	end
 end
 
-function addCharacter(userid)
+function addCharacter(userid, source)
 	local characterid = nil
 	if characterCount ~= 0 then
 		local latestId = MySQL2.Sync.fetchScalar("SELECT * FROM characters ORDER BY charid DESC LIMIT 1",{})
@@ -21,7 +21,24 @@ function addCharacter(userid)
 	MySQL2.Async.execute("INSERT INTO `characters` (charid, userid) VALUES(?, ?)",
 		{characterid,userid})
 	characterCount = characterCount + 1
+
+	if source ~= nil then
+		TriggerClientEvent("login:cl_receiveNewCharId", source, characterid)
+	end
+
 	return characterid
+end
+
+function addCharData(charid, userid, charData)
+	local queryInsert = "(charid,"
+	local queryValues = "("..charid..","
+	for dataName,dataVal in pairs(charData) do
+		queryInsert = queryInsert..dataName..","
+		queryValues = queryValues..'"'..dataVal..'"'..","
+	end
+	queryInsert = queryInsert:sub(1, -2)..")"
+	queryValues = queryValues:sub(1, -2)..")"
+	MySQL2.Async.execute("REPLACE INTO `character_data` "..queryInsert.." VALUES "..queryValues)
 end
 
 function getCharacters(userid)
@@ -85,4 +102,11 @@ AddEventHandler("login:sv_secureLogin", function(userid, charid)
 	else
 		TriggerClientEvent("login:cl_denyLogin", player)
 	end
+end)
+
+RegisterNetEvent("login:sv_addCharacter")
+AddEventHandler("login:sv_addCharacter", function(userid, charData)
+	local player = source
+	local charid = addCharacter(userid, player)
+	addCharData(charid, userid, charData)
 end)

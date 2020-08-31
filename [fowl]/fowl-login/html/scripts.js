@@ -1,16 +1,42 @@
+// Character Creation
+var newCharFields = ["firstname","lastname"]
+var requiredNewCharFields = ["firstname","lastname"];
+function createNewChar() {
+	var canCreate = true;
+	for (const [key, value] of Object.entries(requiredNewCharFields)) {
+		var element = document.getElementById("newcharinput-"+value);
+		if (element.value.length === 0) {
+			canCreate = false;
+			element.style.border = "1px solid #CF0200";
+		};
+	};
+	if (canCreate === true) {
+		var newCharData = {};
+		for (const [key, value] of Object.entries(newCharFields)) {
+			var element = document.getElementById("newcharinput-"+value);
+			newCharData[value]=element.value;
+			element.value = "";
+			element.style.border = "1px solid white"
+		};
+		$.post("http://fowl-login/createNewChar", JSON.stringify({
+			charData : newCharData
+		}));
+		$("#cmenu-newchar").hide();
+		$("#cmenu-selection").show();
+	};
+};
+
+// Spawn Selection
+function confirmSpawn() {
+	$.post("http://fowl-login/confirmSpawn", JSON.stringify({}))
+}
+
+function cancelSpawn() {
+	$.post("http://fowl-login/cancelSpawn", JSON.stringify({}))
+}
+
 $(function () {
-	/*
-	document.onkeyup = function(data) {
-        if(data.which == 27) { //esc
-            exit();
-        }
-    }
-
-    function exit() {
-
-    }
-	*/
-
+	//Character Data
 	function populateCharWindow(charData) {
 		charData = charData.filter(function (el) {
 			return el != null;
@@ -85,6 +111,13 @@ $(function () {
     		//
 		}
 
+		if (charData.length >= 5) {
+			$("#new-char-button").hide();
+			$("#new-char-button-ghost").hide();
+		};
+
+		document.getElementById("cmenu-chars").innerHTML = "";
+
 		for(var i = 0; i < charData.length; i++) {
    			var char = charData[i];
 
@@ -108,34 +141,12 @@ $(function () {
 		}));
 	}
 
+	// Spawning / City Markers
 	function selectSpawn(id) {
 		$.post("http://fowl-login/selectSpawn", JSON.stringify({
 			spawnId : id
 		}))
 	}
-
-	var loc_bla = {
-		marker_x : 19.8647,
-		marker_y : 53.9720
-	}
-	var loc_str = {
-		marker_x : 21.4569,
-		marker_y : 51.5561
-	}
-	var loc_val = {
-		marker_x : 43.4957,
-		marker_y : 48.7893
-	}
-	var loc_ann = {
-		marker_x : 63.8637,
-		marker_y : 47.9703
-	}
-	var loc_san = {
-		marker_x : 87.0127,
-		marker_y : 53.7681
-	}
-
-	var spawnCities = [loc_bla, loc_str, loc_val, loc_ann, loc_san]
 
 	function populateMarkers(cityData) {
 		var smenu = document.getElementById("smenu");
@@ -190,22 +201,12 @@ $(function () {
    			cityTitle.onmouseout = function(){hideCityTitle(id);};
 
 
-
    			marker.appendChild(icon);
    			marker.appendChild(cityTitle);
    			smenuMarkers.appendChild(marker);
    		};
+
 	};
-
-	function showDiv(div)
-	{
-		$(div).show();
-	}
-
-	function hideDiv(div)
-	{
-		$(div).hide();
-	}
 
 	window.addEventListener('message', function(event) {
 		var ed = event.data;
@@ -222,9 +223,9 @@ $(function () {
 
 		if(ed.loginPrompt) {
 			if(ed.loginPrompt === true) {
-				showDiv("#login-prompt");
+				$("#login-prompt").show;
 			} else if(ed.loginPrompt === false) {
-				hideDiv("#login-prompt");
+				$("#login-prompt").hide;
 			};
 		};
 
@@ -251,20 +252,12 @@ $(function () {
 		if(ed.hideMenu) { $("#smenu-options").hide() }
 
 		if(ed.DrawHTML === true) {
-			showDiv("#mainwrap");
+			$("#mainwrap").show();
 		};
 
 		if(ed.DrawHTML === false) {
-			hideDiv("#mainwrap");
+			$("#mainwrap").hide();
 		};
 
-		if(ed.container) {
-			if(ed.show === true) {
-				showDiv(ed.container)
-			};
-			if(ed.show === false) {
-				hideDiv(ed.container)
-			};
-		};
 	});
 });
