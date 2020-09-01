@@ -6,6 +6,7 @@ client_script {
 	'client/client.lua',
 	'client/spawn.lua', 
 	'client/char.lua', 
+	'lib/Character.lua',
 }
 
 server_script {
