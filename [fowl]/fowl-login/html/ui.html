@@ -34,7 +34,9 @@
 			</div>
 			<div id="cmenu-newchar" style="display:none">
 				<img id="cmenu-background" src="assets/textures/translate_bg_1a.png"></img>
-				<div id="cmenu-new-char">
+				<div id="cmenu-char-creator">
+					<button id="newchar-back-button" class="ghost-button">back</button>
+					
 					<div class="charwindow">
 						<img class="cwindow-border" src="assets/textures/char-window-border.png"></img>
 						<div class="char-data">
@@ -64,6 +66,8 @@
 						</div>
 						<button id="newchar-create-button" onclick="createNewChar();" oninput="bigCaps();">create</button>
 					</div>
+					
+					<button id="newchar-back-button" onclick="cancelCharCreate();">back</button>
 				</div>
 			</div>
 			<span class="linebreak"></span>

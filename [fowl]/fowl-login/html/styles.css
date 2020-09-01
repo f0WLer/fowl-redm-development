@@ -126,6 +126,12 @@ body {
 	align-items: center;
 }
 
+#cmenu-char-creator {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
 #cmenu-background {
 	width: 90%;
 	height: 60%;
@@ -282,6 +288,24 @@ body {
 	color: #c90200;
 	border-color: #c90200;
 }
+
+#newchar-back-button {
+	font-family: RedDeader;
+	font-size: 18pt;
+	color: white;
+	background-color: transparent;
+	border-width: 1px;
+	border-style: solid;
+	margin: 0 1rem 0 1rem;
+}
+#newchar-back-button:focus {
+	outline: none;
+}
+#newchar-back-button:hover {
+	color: #c90200;
+	border-color: #c90200;
+}
+
 
 #smenu {
 	width: 100%;

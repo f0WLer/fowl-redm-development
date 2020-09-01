@@ -25,6 +25,10 @@ function createNewChar() {
 		$("#cmenu-selection").show();
 	};
 };
+function cancelCharCreate() {
+	$("#cmenu-newchar").hide();
+	$("#cmenu-selection").show();
+}
 
 // Spawn Selection
 function confirmSpawn() {
