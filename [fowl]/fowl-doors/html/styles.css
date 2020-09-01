@@ -1,0 +1,19 @@
+body {
+	height: 100vh;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	font-family: -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+	font-family: monospace;
+	font-size: 5vh;
+	position: relative;
+}
+
+.mainwrap{
+	display: flex;
+	justify-content: center;
+	flex-flow: row wrap;
+}
+
