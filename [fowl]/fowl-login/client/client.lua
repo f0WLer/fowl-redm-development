@@ -1,7 +1,3 @@
-SetEveryoneIgnorePlayer(PlayerPedId(), true)
-SetEntityVisible(PlayerPedId(), false)
-SetEntityInvincible(PlayerPedId(), true)
-
 function getUserid()
 	local userid
 	RegisterNetEvent("fowl:setUserid")
@@ -138,6 +134,7 @@ function initiateLogin()
 	while IsLoadingScreenActive() ~= false do
 		Wait(100)
 	end
+	movePlayer(camCoords.x, camCoords.y, camCoords.z)
 
 	DrawHTML()
 	NuiFocus(true)
