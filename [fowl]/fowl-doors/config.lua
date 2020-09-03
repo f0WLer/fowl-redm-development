@@ -9,3 +9,6 @@ Config.Radius = 50.0
 
 -- Distance from a door which a player must be within to lock/unlock (default 1.75)
 Config.DoorActivationRange = 1.75
+
+-- Distance that one door must be from another to be considered a secondary door and be switchable (default 2.25)
+Config.DoorSecondaryRange = 2.25

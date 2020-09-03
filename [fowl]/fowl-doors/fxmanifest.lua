@@ -6,7 +6,8 @@ client_script {
 		'config.lua',
 		'client/sorting.js',
 		'data/doors.js',
-		'client/client.lua',
+		'client/doors.lua',
+		'client/keys.lua',
 }
 
 server_script {
