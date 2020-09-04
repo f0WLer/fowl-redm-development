@@ -1,7 +1,0 @@
-{
-	"1" : ["Bolt Action", "WEAPON_RIFLE_BOLTACTION"],
-	"2" : ["Springfield", "WEAPON_RIFLE_SPRINGFIELD"],
-	"3" : ["Carcano", "WEAPON_SNIPERRIFLE_CARCANO"],
-	"4" : ["Rolling Block", "WEAPON_SNIPERRIFLE_ROLLINGBLOCK"],
-	"5" : ["Rolling Block - Exotic", "WEAPON_SNIPERRIFLE_ROLLINGBLOCK_EXOTIC"]
-}

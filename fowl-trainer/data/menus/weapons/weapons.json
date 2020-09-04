@@ -1,9 +1,0 @@
-{
-	"1" : ["Revolvers", "wpnmenu-revolvers"],
-	"2" : ["Pistols", "wpnmenu-pistols"],
-	"3" : ["Shotguns", "wpnmenu-shotguns"],
-	"4" : ["Rifles", "wpnmenu-rifles"],
-	"5" : ["Repeaters", "wpnmenu-repeaters"],
-	"6" : ["Melee", "wpnmenu-melee"],
-	"7" : ["Misc.", "wpnmenu-misc"]
-}

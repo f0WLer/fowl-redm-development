@@ -1,5 +1,0 @@
-{
-	"1" : ["Model","player-model"],
-	"2" : ["Scale","player-scale"],
-	"3" : ["Teleport to Waypoint","player-tp-waypoint"]
-}
