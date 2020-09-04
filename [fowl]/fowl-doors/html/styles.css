@@ -27,3 +27,12 @@ body {
 	height: 32px;
 	position: absolute;
 }
+
+#onoff-icon{
+	width: 32px;
+	height: 32px;
+	position: absolute;
+	background-image: url(ui/key-icon.png);
+	bottom: 1%;
+	left: 1%;
+}

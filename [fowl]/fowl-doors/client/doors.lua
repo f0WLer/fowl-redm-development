@@ -58,10 +58,14 @@ end
 local radius = Config.Radius
 local doorActiveRange = Config.DoorActivationRange
 local secDoorRange = Config.DoorSecondaryRange
+local doorDeactivateRange = Config.DoorDeactivateRange
+
+if doorDeactivateRange < doorActiveRange then doorDeactivateRange = doorActiveRange end
 -------
 ----
 -------
 
+local doorMode = false
 local crd
 local surroundingDoors
 local nearbyDoor
@@ -106,28 +110,6 @@ function ensureInZone()
 end
 
 function getNearbyDoor()
-	--[[local primDoor
-	local altDoor
-	for k,v in pairs(surroundingDoors) do
-		local door = surroundingDoors[k]
-		if primDoor == nil then
-			if GetDistanceBetweenCoords(crd.x, crd.y, crd.z, door.x, door.y, door.z, true) <= doorActiveRange then
-				primDoor = door
-			end
-		else
-			if GetDistanceBetweenCoords(primDoor.x, primDoor.y, primDoor.z, door.x, door.y, door.z, true) <= secDoorRange then
-				altDoor = door
-				break
-			end
-		end
-	end
-	if altDoor ~= nil then
-		local primDist = GetDistanceBetweenCoords(crd.x, crd.y, crd.z, primDoor.x, primDoor.y, primDoor.z, true)
-		local altDist = GetDistanceBetweenCoords(crd.x, crd.y, crd.z, altDoor.x, altDoor.y, altDoor.z, true)
-		if primDist > altDist then
-			return altDoor, primDoor
-		end
-	end]]
 	local primDoor
 	local altDoor
 	local doors = {}
@@ -172,6 +154,10 @@ function switchDoors()
 	switch = false
 end
 
+function GetEntityFromDoorhash(doorhash)
+	return Citizen.InvokeNative(0xF7424890E4A094C0,doorhash,0)
+end
+
 function lockDoor(doorHash)
 	DoorSystemSetDoorState(doorHash, 1)
 end
@@ -183,7 +169,7 @@ end
 function drawDoorIcon(toggle,isLocked) 
 	if toggle == true then
 		local door = nearbyDoor
-		local onScreen,screenX,screenY = GetScreenCoordFromWorldCoord(door.x,door.y,door.z+1.5)
+		local onScreen,screenX,screenY = GetScreenCoordFromWorldCoord(door.x+door.offset.x,door.y+door.offset.y,door.z+1.25)
 		SendNUIMessage({drawIcon = true, doorX = screenX, doorY = screenY})
 		if isLocked == true then
 			SendNUIMessage({doorLocked = true})
@@ -193,20 +179,31 @@ function drawDoorIcon(toggle,isLocked)
 	else
 		SendNUIMessage({drawIcon = false})
 	end
-	--[[
-	local door = nearbyDoor
-	SetTextScale(0.3, 0.3)
-	SetTextCentre(true)
-	local onScreen,screenX,screenY = GetScreenCoordFromWorldCoord(door.x,door.y,door.z+1.5)
-	local lockText = CreateVarString(10, "LITERAL_STRING", "Locked")
-	local unlockText = CreateVarString(10, "LITERAL_STRING", "Unlocked")
-	if isLocked == true then
-		DisplayText(lockText, screenX, screenY)
-	else
-		DisplayText(unlockText, screenX, screenY)
-	end
-	]]
 end	
+
+function getDoorDimensions()
+	local door = nearbyDoor
+	door.dmin,door.dmax = GetModelDimensions(door.modelhash)
+	door.width = door.dmax.x - door.dmin.x - 0.2
+	door.length = door.dmax.y - door.dmin.y
+	door.height = door.dmax.z - door.dmin.z
+	nearbyDoor = door
+end
+
+function getDoorHandleCoords()
+	local door = nearbyDoor
+	local ent = GetEntityFromDoorhash(door.hash)
+	local head = GetEntityHeading(ent)
+	local r = door.width
+	local t = math.rad(head)
+	local handle = {
+		x = r*math.cos(t),
+		y = r*math.sin(t),
+		z = door.z+(door.height/2),
+	}
+	door.offset = handle
+	nearbyDoor = door
+end
 
 function handlePrompts(doorState)
 	if secDoor ~= nil then
@@ -245,23 +242,23 @@ end
 function handleNearbyDoor()
 	local door = nearbyDoor
 	doorHash = door.hash
-	print(doorHash)
 	if IsDoorRegisteredWithSystem(doorHash) == false then
 		DoorSystemRegisterDoor(doorHash)
 	end
-
+	getDoorDimensions()
 	local inRange = true
-	while inRange == true and switch == false do
+	while inRange == true and switch == false and doorMode == true do
 		crd = GetEntityCoords(PlayerPedId())
 		
 		if secDoor ~= nil then
-			if GetDistanceBetweenCoords(crd.x, crd.y, crd.z, door.x, door.y, door.z, true) > doorActiveRange and GetDistanceBetweenCoords(crd.x, crd.y, crd.z, secDoor.x, secDoor.y, secDoor.z, true) > doorActiveRange then
+			if GetDistanceBetweenCoords(crd.x, crd.y, crd.z, door.x, door.y, door.z, true) > doorDeactivateRange and GetDistanceBetweenCoords(crd.x, crd.y, crd.z, secDoor.x, secDoor.y, secDoor.z, true) > doorDeactivateRange then
 				inRange = false
 			end
-		elseif GetDistanceBetweenCoords(crd.x, crd.y, crd.z, door.x, door.y, door.z, true) > doorActiveRange then
+		elseif GetDistanceBetweenCoords(crd.x, crd.y, crd.z, door.x, door.y, door.z, true) > doorDeactivateRange then
 			inRange = false
 		end
 
+		getDoorHandleCoords()
 		local doorState = DoorSystemGetDoorState(door.hash)
 		if doorState == -1 or doorState == 0 then
 			drawDoorIcon(true, false)
@@ -284,20 +281,37 @@ function handleNearbyDoor()
 end
 
 Citizen.CreateThread(function()
-	createZone()
-	--[[ doorMode = true
-	while doorMode = true do]]
 	while true do
-		if switch == true then
-			switchDoors()
-			handleNearbyDoor()
-			Wait(0)
-		else
-			Wait(500)
-			crd = GetEntityCoords(PlayerPedId())
-			ensureInZone()
-			nearbyDoor,secDoor = getNearbyDoor()
-			if nearbyDoor ~= nil then handleNearbyDoor() end
+		if IsControlJustPressed(1, 0x3D23549A --[[ [ ]]) then
+			if doorMode == true then
+				SendNUIMessage({doorsEnabled = false})
+				doorMode = false
+			else
+				SendNUIMessage({doorsEnabled = true})
+				doorMode = true
+			end
+			Wait(250)
 		end
+		Wait(10)
+	end
+end)
+
+Citizen.CreateThread(function()
+	createZone()
+	while true do
+		while doorMode == true do
+			if switch == true then
+				switchDoors()
+				handleNearbyDoor()
+				Wait(0)
+			else
+				Wait(500)
+				crd = GetEntityCoords(PlayerPedId())
+				ensureInZone()
+				nearbyDoor,secDoor = getNearbyDoor()
+				if nearbyDoor ~= nil then handleNearbyDoor() end
+			end
+		end
+		Wait(50)
 	end
 end)

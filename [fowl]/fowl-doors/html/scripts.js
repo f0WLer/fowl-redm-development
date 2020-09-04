@@ -2,6 +2,13 @@ $(function () {
 	window.addEventListener('message', function(event) {
 		var ed = event.data;
 
+		if (ed.doorsEnabled === true) {
+			$("#onoff-icon").show();
+		} 
+		if (ed.doorsEnabled === false) {
+			$("#onoff-icon").hide();
+		}
+
 		if (ed.drawIcon === true) {
 			$("#door-icon").show();
 		} else if (ed.drawIcon === false) {
