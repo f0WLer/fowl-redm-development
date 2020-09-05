@@ -1,12 +1,14 @@
-charid = nil
+Character = {}
 
-function awaitCharid()
-	while currentChar == nil do
-		Wait(500)
-	end
-	charid = currentChar
+Character.id = exports['fowl-login']:getCharid()
+
+function Character.awaitId()
+	Citizen.CreateThread(function()
+		while Character.id == nil do
+			Wait(500)
+			Character.id = exports['fowl-login']:getCharid()
+		end
+	end)
 end	
 
-Citizen.CreateThread(function()
-	awaitCharid()
-end)
+Character.awaitId()

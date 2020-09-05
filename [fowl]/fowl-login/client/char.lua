@@ -5,6 +5,10 @@ dataLoaded = nil
 currentChar = nil
 local newCharData = nil
 
+exports('getCharid', function()
+	return currentChar
+end)
+
 RegisterNetEvent("login:cl_receiveCharacters")
 AddEventHandler("login:cl_receiveCharacters", function(chars)
 	characters = chars
