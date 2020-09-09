@@ -12,6 +12,11 @@ fowl-doors
 		- Adds a permanemt key for a specific door has that gets saved to the db
 	exports['fowl-doors']:RemovePermanentKey(hash)
 		- Removes permanent key
+	
+	exports['fowl-doors']:GiveMasterKey()
+		- Gives the master key to all doors. Saves to db.
+	exports['fowl-doors']:GiveMasterKey()
+		- Removes the master key. Deletes from db.
 
 fowl-login
 	exports['fowl-login']:getCharid()
