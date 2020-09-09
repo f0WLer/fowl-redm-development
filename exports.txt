@@ -1,0 +1,23 @@
+-------
+-- Client Side
+-------
+
+fowl-doors
+	exports['fowl-doors']:AddTemporaryKey(hash)
+		- Adds a temporary key for a specific door hash for this instance only
+	exports['fowl-doors']:RemoveTemporaryKey(hash)
+		- Removes a temporary key
+
+	exports['fowl-doors']:AddPermanentKey(hash)
+		- Adds a permanemt key for a specific door has that gets saved to the db
+	exports['fowl-doors']:RemovePermanentKey(hash)
+		- Removes permanent key
+
+fowl-login
+	exports['fowl-login']:getCharid()
+		- Returns the current character id if player has logged in
+
+
+-------
+-- Server Side
+-------
