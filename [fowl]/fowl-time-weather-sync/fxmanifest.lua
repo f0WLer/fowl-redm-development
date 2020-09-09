@@ -4,7 +4,7 @@ rdr3_warning 'I acknowledge that this is a prerelease build of RedM, and I am aw
 
 client_script { 
 	'config.lua',
-	'client/main.lua', 
+	'client/cl_main.lua', 
 }
 
 server_script {
@@ -12,5 +12,5 @@ server_script {
 	'server/common.lua',
 	'server/objects/time.lua',
 	'server/objects/weather.lua',
-	'server/main.lua',
+	'server/sv_main.lua',
 }

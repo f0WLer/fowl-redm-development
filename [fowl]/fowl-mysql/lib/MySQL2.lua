@@ -32,7 +32,7 @@ end
 
 function MySQL2.Async.fetchScalar(query, params, func)
     assert(type(query) == "string" or type(query) == "number", "The SQL Query must be a string")
-
+    
     exports['fowl-mysql']:mysql2_fetch_scalar(query, safeParameters(params), func)
 end
 
