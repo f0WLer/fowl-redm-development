@@ -237,6 +237,10 @@ $(function () {
 			document.getElementById("login-prompt").textContent = ed.loginPromptContent;
 		};
 
+		if(ed.newChar == true) {
+			newChar();
+		};
+
 		if(ed.initSpawnSelect) {
 			$("#cmenu").hide();
 			$("#smenu").show();

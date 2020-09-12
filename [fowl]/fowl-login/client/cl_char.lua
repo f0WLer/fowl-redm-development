@@ -18,6 +18,7 @@ AddEventHandler("login:cl_receiveCharacters", function(chars)
 		TriggerServerEvent("login:sv_requestCharacterData", chars)
 	else
 		hasChars = false
+		dataLoaded = true
 	end
 end)
 
@@ -35,7 +36,11 @@ AddEventHandler("login:cl_receiveNewCharId", function(charid)
 		for k,v in pairs(newCharData) do
 			newChar[k] = v
 		end
-		table.insert(charData, newChar)
+		if charData ~= nil then
+			table.insert(charData, newChar)
+		else
+			charData = {newChar}
+		end
 		populateCharData()
 	end
 end)
@@ -43,6 +48,10 @@ end)
 
 function populateCharData()
 	SendNUIMessage({populateCharWindow = true, charData = charData})
+end
+
+function newChar()
+	SendNUIMessage({newChar = true, loginReady = true})
 end
 
 RegisterNUICallback("charWindowPopulated", function(data)

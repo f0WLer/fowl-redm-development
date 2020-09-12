@@ -19,7 +19,11 @@ Citizen.CreateThread(function()
 	while not dataLoaded do
 		Wait(100)
 	end
-	populateCharData()
+	if hasChars == false then
+		newChar()
+	else
+		populateCharData()
+	end
 end)
 
 
