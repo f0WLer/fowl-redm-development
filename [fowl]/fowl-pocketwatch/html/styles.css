@@ -1,0 +1,136 @@
+@font-face { font-family: WatchNumeral; src: url('ui/LMRomanDunh.otf'); }
+
+body {
+	height: 100vh;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	font-family: -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+	font-family: monospace;
+	font-size: 5vh;
+	position: relative;
+	margin: 0;
+	padding: 0;
+}
+
+.mainwrap{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-flow: row wrap;
+	width: 100vw;
+	height: 100vh;
+}
+
+#pocketwatch {
+	position: absolute;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	right: 200px;
+	bottom: 200px;
+}
+
+#pw-frame {
+	position: absolute;
+	height: 504px;
+	width: 352px;
+	margin-top: -77px;
+	background-image: url("ui/textures/watch_back.png");
+	background-size: contain;
+}
+
+#pw-face{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	position: absolute;
+	height: 300px;
+	width: 300px;
+	border-radius: 50%;
+	background-color: aliceblue;
+}
+
+#pw-ticks {
+	position: absolute;
+	width: 300px;
+	height: 300px;
+	background-image: url("ui/textures/ticks.png");
+}
+
+#numerals {
+	position: absolute;
+	height: 300px;
+	width: 300px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0;
+	padding: 0;
+}
+
+.numeral {
+	position: absolute;
+	font-size: 22pt;
+	font-family: WatchNumeral;
+	margin: -75px 0 0 0;
+	padding: 0;
+	height: 150px;
+	display: flex;
+	align-items: flex-start;
+	transform-origin: bottom;
+	text-align: center;
+}
+
+#n1 { transform: rotate(30deg); }
+#n2 { transform: rotate(60deg); }
+#n3 { transform: rotate(90deg); }
+#n4 { transform: rotate(120deg); }
+#n5 { transform: rotate(150deg); }
+#n6 { transform: rotate(180deg); opacity: 0; }
+#n7 { transform: rotate(210deg); }
+#n8 { transform: rotate(240deg); }
+#n9 { transform: rotate(270deg); }
+#n10 { transform: rotate(300deg); }
+#n11 { transform: rotate(330deg); }
+
+#pw-center {
+	position: absolute;
+	height: 20px;
+	width: 20px;
+	border-radius: 50%;
+	background-color: black;
+	z-index: 1;
+}
+
+#minute-hand {
+	position: absolute;
+	height: 148px;
+	width: 4px;
+	background-image: url("ui/textures/minute-hand.png");
+	margin-top: -74px;
+	transform-origin: bottom;
+	transform: rotate(0deg);
+}
+
+#hour-hand {
+	position: absolute;
+	height: 110px;
+	width: 16px;
+	background-image: url("ui/textures/hour-hand.png");
+	margin-top: -55px;
+	transform-origin: bottom;
+	transform: rotate(0deg);
+}
+
+#second-hand {
+	position: absolute;
+	height: 95px;
+	width: 13px;
+	background-image: url("ui/textures//second-hand.png");
+	margin-top: 87px;
+	transform-origin: center;
+	transform: rotate(0deg);
+}

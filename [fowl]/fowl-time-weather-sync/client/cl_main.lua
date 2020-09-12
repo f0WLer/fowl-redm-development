@@ -1,3 +1,6 @@
+currentHour = nil
+currentMinute = nil
+
 Sync = {
 	CurrentWeather = 'WEATHER_CLEAR',
 	WeatherTypes = {
@@ -47,6 +50,9 @@ AddEventHandler('cl_updateTime', function(hour, minute)
 	AdvanceClockTimeTo(hour, minute, 0)
 	NetworkClockTimeOverride(hour, minute, 0, 0, true)
 	NetworkClockTimeOverride_2(hour, minute, 0, 0, true, true)
+
+	currentHour = hour
+	currentMinute = minute
 end)
 
 RegisterNetEvent('cl_updateWeather')
@@ -64,4 +70,12 @@ AddEventHandler('cl_updateWeather', function(weather, windSpeed)
 	end
 
 	SetWindSpeed(windSpeed)
+end)
+
+exports('getHour', function()
+	return currentHour
+end)
+
+exports('getMinute', function()
+	return currentMinute
 end)
