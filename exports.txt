@@ -22,7 +22,17 @@ fowl-login
 	exports['fowl-login']:getCharid()
 		- Returns the current character id if player has logged in
 
+fowl-time-weather-sync
+	exports['fowl-time-weather-sync]:getHour()
+		- Returns the current client hour (0-23)
+	exports['fowl-time-weather-sync]:getMinute()
+		- Returns the current client minutes (0-59)
 
 -------
 -- Server Side
 -------
+fowl-time-weather-sync
+	exports['fowl-time-weather-sync]:getHours()
+		- Returns the current server hour (0-23)
+	exports['fowl-time-weather-sync]:getMinutes()
+		- Returns the current server minutes (0-59)
