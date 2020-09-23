@@ -1,0 +1,120 @@
+@font-face { font-family: RD-1; src: url('assets/RDRLino-Regular.ttf'); }
+
+body {
+	position: relative;
+	display: flex;
+	height: 100vh;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	overflow: hidden;
+	font-family: -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
+	font-family: monospace;
+	font-size: 5vh;
+}
+
+.flex {
+	display: flex;
+	flex-flow: row wrap;
+}
+
+.m0 { margin: 0; }
+.p0 { padding: 0; }
+
+
+#mainwrap{
+	width: 100vw;
+	height: 100vh;
+
+	/* Positioning */
+	justify-content: flex-start;
+	align-items: flex-start;
+	/* =========== */
+}
+
+#leo-wrapper{
+	/* Positioning */
+	margin-top: 0.5em;
+	margin-left: 0.5em;
+	/* =========== */
+	
+	justify-content: flex-start;
+	align-content: center;
+	flex-direction: column;
+		
+	min-height: 128px;
+	height: fit-content;
+	width: fit-content;
+	
+	padding-bottom: .25em;
+
+	background:
+		url("assets/textures/outline.png") no-repeat,
+		url("assets/textures/catalog_weapons_back.png") no-repeat;
+
+	background-size: 100% 100%;
+}
+
+#leo-title {
+	height: fit-content;
+	
+	margin: 0.75em 1em 4px 1em;
+	
+	font-size: 14pt;
+}
+
+.divider {
+	height: 4px;
+	width: 75%;
+	
+	margin: 0 auto 0 auto;
+	
+	background-image: url("assets/textures/divider.png");
+}
+
+#officer-list {
+	justify-content: center;
+	align-items: flex-start;
+	flex-direction: column;
+
+	width: fit-content;
+	height: calc(100% - 1em);
+
+	margin-top: 4px;
+	margin-left: 20px;
+	margin-right: 0.25em;
+}
+
+.officer{
+	width: fit-content;
+
+	margin-bottom: 0.25em;
+	padding: 0 0.5em 0 0.5em;
+	
+	font-family: RD-1;
+	font-size: 18pt;
+	color: black;
+	text-align: center;
+}
+
+.officer::before{
+	content: "";
+	display: block;
+	position: absolute;
+	
+	height: 18px;
+	width: 18px;
+	
+	margin-top: 2px;
+	margin-left: -0.8em;
+	
+	background-image: url("assets/textures/star.png");
+	background-size: contain;
+}
+
+.text {
+	font-family: RD-1;
+	font-size: 18pt;
+	color: black;
+	text-align: center;
+}
