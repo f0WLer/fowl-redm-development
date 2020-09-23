@@ -5,7 +5,7 @@
 - https://www.phpmyadmin.net
 -
 - Host: 127.0.0.1
-- Generation Time: Aug 26, 2020 at 02:28 PM
+- Generation Time: Sep 23, 2020 at 12:08 PM
 - Server version: 10.4.13-MariaDB
 - PHP Version: 7.4.7
 -->
@@ -21,7 +21,8 @@
                   `charid` int(10) NOT NULL,
                   `userid` int(10) NOT NULL,
                   PRIMARY KEY (`charid`),
-                  KEY `userid` (`userid`)
+                  KEY `userid` (`userid`),
+                  CONSTRAINT `characters:userid` FOREIGN KEY (`userid`) REFERENCES `users` (`userid`) ON DELETE CASCADE ON UPDATE CASCADE
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
             </pma:table>
             <pma:table name="character_data">
@@ -29,7 +30,33 @@
                   `charid` int(10) NOT NULL,
                   `firstname` varchar(128) DEFAULT NULL,
                   `lastname` varchar(128) DEFAULT NULL,
+                  PRIMARY KEY (`charid`),
+                  CONSTRAINT `character_data:charid` FOREIGN KEY (`charid`) REFERENCES `characters` (`charid`) ON DELETE CASCADE ON UPDATE CASCADE
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+            </pma:table>
+            <pma:table name="door_keys">
+                CREATE TABLE `door_keys` (
+                  `charid` int(10) NOT NULL,
+                  `doorkeys` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`doorkeys`)),
+                  PRIMARY KEY (`charid`) USING BTREE,
+                  CONSTRAINT `door_keys:charid` FOREIGN KEY (`charid`) REFERENCES `characters` (`charid`) ON DELETE CASCADE ON UPDATE CASCADE
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+            </pma:table>
+            <pma:table name="door_masterkeys">
+                CREATE TABLE `door_masterkeys` (
+                  `charid` int(10) NOT NULL,
                   PRIMARY KEY (`charid`)
+                ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+            </pma:table>
+            <pma:table name="inventory">
+                CREATE TABLE `inventory` (
+                  `id` varchar(128) NOT NULL,
+                  `ischar` tinyint(1) NOT NULL DEFAULT 1,
+                  `charid` int(10) NOT NULL,
+                  `inv` varchar(10000) CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL,
+                  PRIMARY KEY (`id`),
+                  UNIQUE KEY `charid` (`charid`),
+                  CONSTRAINT `inventory:charid` FOREIGN KEY (`charid`) REFERENCES `characters` (`charid`) ON DELETE CASCADE ON UPDATE CASCADE
                 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
             </pma:table>
             <pma:table name="letters">
@@ -81,7 +108,19 @@
             <column name="userid">1</column>
         </table>
         <table name="characters">
-            <column name="charid">2</column>
+            <column name="charid">4</column>
+            <column name="userid">1</column>
+        </table>
+        <table name="characters">
+            <column name="charid">5</column>
+            <column name="userid">1</column>
+        </table>
+        <table name="characters">
+            <column name="charid">6</column>
+            <column name="userid">1</column>
+        </table>
+        <table name="characters">
+            <column name="charid">7</column>
             <column name="userid">2</column>
         </table>
         <!-- Table character_data -->
@@ -91,44 +130,77 @@
             <column name="lastname">Bolton</column>
         </table>
         <table name="character_data">
-            <column name="charid">2</column>
-            <column name="firstname">Character</column>
-            <column name="lastname">Two</column>
-        </table>
-        <table name="character_data">
             <column name="charid">3</column>
             <column name="firstname">Character</column>
             <column name="lastname">Three</column>
+        </table>
+        <table name="character_data">
+            <column name="charid">4</column>
+            <column name="firstname">Testing</column>
+            <column name="lastname">Character</column>
+        </table>
+        <table name="character_data">
+            <column name="charid">5</column>
+            <column name="firstname">New</column>
+            <column name="lastname">Char</column>
+        </table>
+        <table name="character_data">
+            <column name="charid">6</column>
+            <column name="firstname">Character</column>
+            <column name="lastname">Test</column>
+        </table>
+        <table name="character_data">
+            <column name="charid">7</column>
+            <column name="firstname">Alt</column>
+            <column name="lastname">Character</column>
+        </table>
+        <!-- Table door_keys -->
+        <table name="door_keys">
+            <column name="charid">3</column>
+            <column name="doorkeys">{&quot;test&quot;:&quot;test&quot;}</column>
+        </table>
+        <!-- Table door_masterkeys -->
+        <table name="door_masterkeys">
+            <column name="charid">7</column>
+        </table>
+        <!-- Table inventory -->
+        <table name="inventory">
+            <column name="id">char_3</column>
+            <column name="ischar">1</column>
+            <column name="charid">3</column>
+            <column name="inv">{[&quot;1&quot;] : {&quot;item&quot; : &quot;pistol&quot;,&quot;amount&quot;: 2,},[&quot;2&quot;] : &quot;empty&quot;,[&quot;3&quot;] : {&quot;item&quot; : &quot;pistol&quot;,&quot;amount&quot; : 1,},[&quot;4&quot;] : {&quot;item&quot; : &quot;hat&quot;,&quot;amount&quot; : 1,},[&quot;5&quot;] : {&quot;item&quot; : &quot;hat&quot;,&quot;amount&quot; : 1,},[&quot;6&quot;] : &quot;empty&quot;,[&quot;7&quot;] : &quot;empty&quot;,[&quot;8&quot;] : &quot;empty&quot;,[&quot;9&quot;] : &quot;empty&quot;,[&quot;10&quot;] : &quot;empty&quot;,}</column>
         </table>
         <!-- Table letters -->
         <table name="letters">
             <column name="letterid">1</column>
             <column name="ownerid">1</column>
             <column name="creatorid">1</column>
-            <column name="body">Letter 1</column>
-            <column name="address">Letter 1</column>
-            <column name="returnaddress">Walter</column>
+            <column name="body">Dear Sir,
+
+	This is a test of the letter system.
+
+Letters can be written at a post office.
+
+Letters can be mailed to other players via the postal system.
+
+Mail runs every day at 8 am.
+
+Mail will be returned if the recipient cannot be found (Invalid P.O. box).
+
+
+
+
+
+
+
+...
+
+
+Sincerely,
+	Developer</column>
+            <column name="address">Unknown Recipient</column>
+            <column name="returnaddress">Developer</column>
             <column name="returned">1</column>
-            <column name="date">NULL</column>
-        </table>
-        <table name="letters">
-            <column name="letterid">2</column>
-            <column name="ownerid">1</column>
-            <column name="creatorid">1</column>
-            <column name="body">Letter 2</column>
-            <column name="address">Letter 2</column>
-            <column name="returnaddress">Walter</column>
-            <column name="returned">1</column>
-            <column name="date">NULL</column>
-        </table>
-        <table name="letters">
-            <column name="letterid">3</column>
-            <column name="ownerid">1</column>
-            <column name="creatorid">1</column>
-            <column name="body">Letter 3</column>
-            <column name="address">NULL</column>
-            <column name="returnaddress">NULL</column>
-            <column name="returned">0</column>
             <column name="date">NULL</column>
         </table>
         <!-- Table mail -->
@@ -137,6 +209,11 @@
             <column name="userid">1</column>
             <column name="steamid">steam:110000109533e5d</column>
             <column name="name">f0WL</column>
+        </table>
+        <table name="users">
+            <column name="userid">2</column>
+            <column name="steamid">license:2de523fc35bcb5c57a2b5f045ea1febb8fb27a98</column>
+            <column name="name">Fowl</column>
         </table>
     </database>
 </pma_xml_export>
