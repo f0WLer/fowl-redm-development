@@ -1,0 +1,64 @@
+<head>
+	<script src="nui://game/ui/jquery.js" type="text/javascript"></script>
+	<script type="text/javascript" src="/data/items.js"></script>
+	<script type="text/javascript" src="scripts.js"></script>
+	<script src="debounce.min.js" type="text/javascript"></script>
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+	<link rel="stylesheet" href="styles.css" type="text/css">
+</head>
+<body>
+	<div id="mainwrap" class="flex m0 p0">
+  <div id="inventory" class="flex m0 p0">
+    <div id="player-inv" class="inv flex m0 p0">
+      <p id="player-inv-tag" class="inv-tag">
+        char_1
+      </p>
+      <div id="player-item-showcase" class="item-showcase flex m0 p0">
+        <div id="player-select-icon" class="select-icon"></div>
+        <div class="select-info">
+          <div id="player-select-name" class="select-title">Item Name</div>
+          <div id="player-select-desc" class="select-desc">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius ipsa vitae dignissimos suscipit dicta et, impedit molestias expedita itaque animi!
+          </div>
+        </div>
+      </div>
+      <div id="player-items" class="item-grid">
+
+      </div>
+    </div>
+    <div id="menu" class="flex m0 p0">
+      <input type="number" id="amount-input" placeholder="Amount">
+      <button id="use-button" class="menu-button">Use</button>
+      <button id="drop-button" class="menu-button">Drop</button>
+    </div>
+    <div id="target-inv" class="inv flex m0 p0">
+      <div id="target-inv-tag" class="inv-tag">
+        stash_1
+      </div>
+      <div id="target-item-showcase" class="item-showcase flex m0 p0">
+        <div id="target-select-icon" class="select-icon"></div>
+        <div class="select-info">
+          <div id="target-select-name" class="select-title">Item Name</div>
+          <div id="target-select-desc" class="select-desc">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Eius ipsa vitae dignissimos suscipit dicta et, impedit molestias expedita itaque animi!
+          </div>
+        </div>
+      </div>
+      <div id="target-items" class="item-grid">
+      	
+      </div>
+    </div>
+    <div id="drag-item" class="flex" style="display:none;">
+      <div id="drag-item-amount" class="item-amount"></div>
+      <div id="drag-item-name" class="item-name"></div>
+      <img src="" id="drag-item-icon" class="item-icon">
+    </div>
+  </div>
+</div>
+
+</body>
+
+<script type="text/javascript">
+	//$("#mainwrap").hide();
+	
+</script>
