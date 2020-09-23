@@ -145,7 +145,6 @@ end)
 -- Doors
 -------
 function playerHasKey(doorHash)
-	print(masterKey)
 	if masterKey == true then return "master" end
 
 	if permkeys ~= nil then
