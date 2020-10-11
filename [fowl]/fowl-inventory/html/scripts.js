@@ -195,6 +195,14 @@ $(function () {
 	}
 
 	const secure = {
+		getTransType : function(primId, secId) {
+			if ( primId.includes("player") && secId.includes("player") ) {
+				return secure.player;
+			} else if ( primId.includes("target") && secId.includes("target") ) {
+				return secure.target;
+			} else { return secure.transaction }
+		},
+		
 		player : {
 			move : function(item, target) {
 				fetch(`https://${GetParentResourceName()}/player_move`, {
@@ -264,6 +272,22 @@ $(function () {
 			},
 		},
 
+		target : {
+			move : function() { console.log("target-move") },
+			swap : function() { console.log("target-swap") },
+			math : function() { console.log("target-math") },
+			combine : function() { console.log("target-combine") },
+			split : function() { console.log("target-split") },
+		},
+
+		transaction : {
+			move : function() { console.log("transaction-move") },
+			swap : function() { console.log("transaction-swap") },
+			math : function() { console.log("transaction-math") },
+			combine : function() { console.log("transaction-combine") },
+			split : function() { console.log("transaction-split") },
+		},
+
 		inventory : {
 			secureCallback : function(wasSuccessful) {
 				if ( wasSuccessful ) {
@@ -296,12 +320,11 @@ $(function () {
 		setSlotIcon(secItem, primIcon);
 		setSlotId(secItem, primId);
 
-		if ( primItem.id.includes("player") && secItem.id.includes("player") ) {
-			secure.player.swap(
-				{"index":primIndex,"id":primId,"amount":primAmount},
-				{"index":secIndex,"id":secId,"amount":secAmount},
-			);
-		}
+		var transType = secure.getTransType(primItem.id, secItem.id);
+		transType.swap(
+			{"index":primIndex,"id":primId,"amount":primAmount},
+			{"index":secIndex,"id":secId,"amount":secAmount},
+		);
 	}
 
 	function moveItem(item, slot) {
@@ -329,12 +352,11 @@ $(function () {
 		setSlotPopulated(slot, true);
 
 
-		if ( item.id.includes("player") && slot.id.includes("player") ) {
-			secure.player.move(
+		var transType = secure.getTransType(item.id, slot.id);
+		transType.move(
 				{"index":itemIndex,"id":itemId,"amount":itemAmount},
 				{"index":slotIndex,"id":slotId,"amount":slotAmount},
-			);
-		}
+		);
 	}
 
 	function mathItems(primItem, secItem){
@@ -351,13 +373,12 @@ $(function () {
 		setSlotAmount(primItem, primSum);
 		setSlotAmount(secItem, secSum);
 
-		if ( primItem.id.includes("player") && secItem.id.includes("player") ) {
-			secure.player.math(
+		var transType = secure.getTransType(primItem.id, secItem.id);
+		transType.math(
 				{"index":primIndex,"id":primId,"amount":primAmount},
 				{"index":secIndex,"id":secId,"amount":secAmount},
 				selectedAmount, primSum, secSum
-			);
-		}
+		);
 	}
 
 	function combineItems(primItem, secItem) {
@@ -378,13 +399,12 @@ $(function () {
 		var secSum = primAmount + secAmount;
 		setSlotAmount(secItem, secSum);
 
-		if ( primItem.id.includes("player") && secItem.id.includes("player") ) {
-			secure.player.combine(
+		var transType = secure.getTransType(primItem.id, secItem.id);
+		transType.combine(
 				{"index":primIndex,"id":primId,"amount":primAmount},
 				{"index":secIndex,"id":secId,"amount":secAmount},
 				secSum
-			);
-		}
+		);
 	}
 
 	function splitItem(primItem, secItem) {
@@ -408,13 +428,12 @@ $(function () {
 		setSlotPopulated(secItem, true);
 
 
-		if ( primItem.id.includes("player") && secItem.id.includes("player") ) {
-			secure.player.split(
+		var transType = secure.getTransType(primItem.id, secItem.id);
+		transType.split(
 				{"index":primIndex,"id":primId,"amount":primAmount},
 				{"index":secIndex,"amount":secAmount},
 				selectedAmount, expectedAmount
-			);
-		}
+		);
 	}
 
 
